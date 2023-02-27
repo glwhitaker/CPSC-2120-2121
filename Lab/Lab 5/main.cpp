@@ -16,19 +16,23 @@
 //  int main()
 //  {
 //     Stringset wordlist;
-    
 //     loadStringset(wordlist, "wordlist.txt");
-    
-//     //testStringset(wordlist);
-
-//     vector<string> alt = spellcheck(wordlist, "pointer");
-
-//     for(int i = 0; i < alt.size(); i++){
-//         cout << alt[i] << endl;
+//     // testStringset(wordlist);
+//     string input;
+//     cout << "Enter word to spellcheck: ";
+//     cin >> input;
+//     cout << input;
+//     if(wordlist.find(input)){
+//         cout << " found" << endl;
 //     }
-    
-
-
+//     else{
+//         cout << " not found" << endl;
+//     }
+//     vector<string> alt = spellcheck(wordlist, input);
+//     cout << "Alternatives(" << alt.size() << "): " << endl;
+//     for(auto i : alt){
+//         cout << i << endl;
+//     }
 //     return 0;
 //  }
  
