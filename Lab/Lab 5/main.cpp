@@ -111,14 +111,13 @@
     vector<string> alternatives;
     // increment through string
     for(int i = 0; i < word.length(); i++){
-        // set/reset temp and alternateChar
+        // set/reset temp
         string temp = word;
-        char alternateChar = 'a';
-        for(int j = 0; j < 26; j++, alternateChar++){
+        for(char j = 'a'; j <= 'z'; j++){
             // swap out char at index with each letter from alphabet
-            temp[i] = alternateChar;
+            temp[i] = j;
             // if an alternative is found, add to alternative array
-            if(words.find(temp) && temp[i] != word[i]){
+            if(words.find(temp) && temp != word){
                 alternatives.push_back(temp);
             }
         }
