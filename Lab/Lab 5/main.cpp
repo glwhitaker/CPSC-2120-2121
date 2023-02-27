@@ -1,8 +1,8 @@
 /*
- * Name:
- * Date Submitted:
- * Lab Section:
- * Assignment Name:
+ * Name: Grayson Whitaker
+ * Date Submitted: 3/6/2023
+ * Lab Section: 002
+ * Assignment Name: Lab 5: Spell Checker Using a Hash Table
  */
  
  #include "stringset.h"
@@ -12,13 +12,25 @@
  void testStringset(Stringset& words);
  void loadStringset(Stringset& words, string filename);
  vector<string> spellcheck(const Stringset& words, string word);
- 
- int main()
- {
-     Stringset wordlist;
-     testStringset(wordlist);
-     return 0;
- }
+
+//  int main()
+//  {
+//     Stringset wordlist;
+    
+//     loadStringset(wordlist, "wordlist.txt");
+    
+//     //testStringset(wordlist);
+
+//     vector<string> alt = spellcheck(wordlist, "pointer");
+
+//     for(int i = 0; i < alt.size(); i++){
+//         cout << alt[i] << endl;
+//     }
+    
+
+
+//     return 0;
+//  }
  
  void testStringset(Stringset& words)
  {
@@ -77,12 +89,35 @@
      } while (choice[0] != 'Q' && choice[0] != 'q');
  }
  
- void loadStringset(Stringset& words, string filename)
- {
-     //Implement this function
- }
+ // Loads words from a file into a stringset
+ void loadStringset(Stringset& words, string filename){
+    // open file
+    ifstream inputFile(filename);
+    string word;
+    // read words from file and insert into stringset
+    while(inputFile >> word){
+        words.insert(word);
+    }
+    // close file
+    inputFile.close();
+}
  
- vector<string> spellcheck(const Stringset& words, string word)
- {
-     //Implement this function
- }
+ // checks for alternative spellings for a certain string
+ vector<string> spellcheck(const Stringset& words, string word){
+    vector<string> alternatives;
+    // increment through string
+    for(int i = 0; i < word.length(); i++){
+        // set/reset temp and alternateChar
+        string temp = word;
+        char alternateChar = 'a';
+        for(int j = 0; j < 26; j++, alternateChar++){
+            // swap out char at index with each letter from alphabet
+            temp[i] = alternateChar;
+            // if an alternative is found, add to alternative array
+            if(words.find(temp) && temp[i] != word[i]){
+                alternatives.push_back(temp);
+            }
+        }
+    }
+    return alternatives;
+}
