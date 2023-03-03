@@ -14,15 +14,6 @@
 using namespace std;
 
 vector<string> loadWordlist(string filename);
-
-/*Implement the following function:
-  anagram() takes a word (string) and a wordlist of all words (vector of strings)
-  and builds a dictionary/map where the key is a specific number of times each
-  letter occurs in a word and the associated value is a vector of strings
-  containing all words using those letters (anagrams).
-  The value returned is a vector of strings containing the corresponding
-  set of anagrams
-*/
 vector<string> anagram(string word, vector<string> wordlist);
 
 int main()
