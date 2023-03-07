@@ -10,6 +10,7 @@
 #include <fstream>
 #include <vector>
 #include <cmath>
+#include <chrono>
 
 using namespace std;
 
@@ -48,6 +49,9 @@ double closestPair(string filename){
 		cellTable[(int)(p.x * b)][(int)(p.y * b)].push_back(p);
 	}
 
+	// close the file
+	inputFile.close();
+
 	// Find the distance between closest pair of points as a double value, check 8 cells around the cell the point is in
 	double minimum = 1.0;
 	// iterate through the cells in the cell table
@@ -55,22 +59,26 @@ double closestPair(string filename){
 		for(int j = 0; j < b; j++){
 			// get the current cell
 			vector<point> currentCell = cellTable[i][j];
-			// iterate through the points in the cell
+			// iterate through the points in the current cell
 			for(int k = 0; k < currentCell.size(); k++){
-				// iterate through the cells around the cell the point is in
-				for(int l = -1; l <= 1; l++){
-					for(int m = -1; m <= 1; m++){
-						// check if the cell is in the cell table
-						if(i + l >= 0 && i + l < b && j + m >= 0 && j + m < b){
-							// iterate through the points in the cell
-							for(int n = 0; n < cellTable[i + l][j + m].size(); n++){
-								// if the points are not the same point
-								if(currentCell[k].x != cellTable[i + l][j + m][n].x || currentCell[k].y != cellTable[i + l][j + m][n].y){
-									// calculate the distance between the points
-									double distance = sqrt(pow(currentCell[k].x - cellTable[i + l][j + m][n].x, 2) + pow(currentCell[k].y - cellTable[i + l][j + m][n].y, 2));
-									if(distance < minimum){
-										minimum = distance;
-									}
+				// iterate through current cell, cell to the right, cell below, and cell to the right and below
+				for(int l = 0; l <= 1; l++){
+					for(int m = 0; m <= 1; m++){
+						// check if the compare cell is in the cell table
+						if(i + l < b && j + m < b){
+							// get the compare cell
+							vector<point> compareCell = cellTable[i + l][j + m];
+							// iterate through the points in the compare cell
+							for(int n = 0; n < compareCell.size(); n++){
+								// if in the same cell, do not compare two points more than once, do not compare point to itself
+								if(l == 0 && m == 0 && n >= k){
+									break;
+								}
+								// calculate the distance between the points
+								double distance = sqrt(pow(currentCell[k].x - compareCell[n].x, 2) + pow(currentCell[k].y - compareCell[n].y, 2));
+								// if the distance is less than the minimum, set the minimum to the distance
+								if(distance < minimum && distance != 0){
+									minimum = distance;
 								}
 							}
 						}
