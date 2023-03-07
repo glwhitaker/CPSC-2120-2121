@@ -26,9 +26,9 @@ struct point
                   one point per line
                   x-value and y-value are double-precision values and
                   bounded by the unit square 0.0 <= x,y < 1.0
-  Should use "spatial hashing" where the #of cells scales with the #of points
-  and find the distance between the closest pair of points which will be
-  returned as a double type value
+  Uses "spatial hashing" where the #of cells scales with the #of points
+  and finds the distance between the closest pair of points returned
+  as a double type value
 */
 double closestPair(string filename){
 	// Open the file and read in the number of points
@@ -51,7 +51,7 @@ double closestPair(string filename){
 	// close the file
 	inputFile.close();
 
-	// Find the distance between closest pair of points as a double value, check 8 cells around the cell the point is in
+	// Find the distance between closest pair of points as a double value
 	double minimum = 1.0;
 	// iterate through the cells in the cell table
 	for(int i = 0; i < b; i++){
@@ -76,7 +76,7 @@ double closestPair(string filename){
 								// calculate the distance between the points
 								double distance = sqrt(pow(currentCell[k].x - compareCell[n].x, 2) + pow(currentCell[k].y - compareCell[n].y, 2));
 								// if the distance is less than the minimum, set the minimum to the distance
-								if(distance < minimum && distance != 0){
+								if(distance < minimum){
 									minimum = distance;
 								}
 							}
