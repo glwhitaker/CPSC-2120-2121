@@ -87,7 +87,7 @@ double closestPair(string filename){
 		}
 	}
 	
-	// return the minimum distance
+	// return the minimum distance between two points
 	return minimum;
 }
 
