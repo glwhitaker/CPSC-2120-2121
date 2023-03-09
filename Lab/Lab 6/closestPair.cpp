@@ -20,14 +20,14 @@ struct point
 };
 
 // returns the minimum distance between the point p and the points in the cell without comparing the point to itself or to points already compared
-double checkMinimum(const int k, const point p, const vector<point> cell, double minimum){
-	for(int i = 0; i < cell.size(); i++){
-		// if in the current cell, do not compare point to itself, do not compare two points more than once
-		if((p.x == cell[i].x && p.y == cell[i].y) || i >= k && k != 0){
+double checkMinimum(const int k, const vector<point> currentCell, const vector<point> compareCell, double minimum){
+	for(int i = 0; i < compareCell.size(); i++){
+		// if in the current compareCell, do not compare point to itself, do not compare two points more than once
+		if(currentCell[i].x == compareCell[i].x && currentCell[i].y == compareCell[i].y && i >= k){
 			break;
 		}
-		// calculate the distance between the point and the current point in the cell
-		double distance = sqrt(pow(p.x - cell[i].x, 2) + pow(p.y - cell[i].y, 2));
+		// calculate the distance between the point and the current point in the compareCell
+		double distance = sqrt(pow(currentCell[k].x - compareCell[i].x, 2) + pow(currentCell[k].y - compareCell[i].y, 2));
 		// if the distance is less than the minimum, set the minimum to the distance
 		if(distance < minimum){
 			minimum = distance;
@@ -80,22 +80,22 @@ double closestPair(string filename){
 			for(int k = 0; k < currentCell.size(); k++){
 				// check the needed cells, do not need to compare to previous surrounding cells
 				// current cell
-				minimum = checkMinimum(k, currentCell[k], currentCell, minimum);
+				minimum = checkMinimum(k, currentCell, currentCell, minimum);
 				// right cell
 				if(j + 1 < b){
-					minimum = checkMinimum(k, currentCell[k], cellTable[i][j + 1], minimum);
+					minimum = checkMinimum(k, currentCell, cellTable[i][j + 1], minimum);
 				}
 				// bottom cell
 				if(i + 1 < b){
-					minimum = checkMinimum(k, currentCell[k], cellTable[i + 1][j], minimum);
+					minimum = checkMinimum(k, currentCell, cellTable[i + 1][j], minimum);
 				}
 				// bottom right cell
 				if(i + 1 < b && j + 1 < b){
-					minimum = checkMinimum(k, currentCell[k], cellTable[i + 1][j + 1], minimum);
+					minimum = checkMinimum(k, currentCell, cellTable[i + 1][j + 1], minimum);
 				}
 				// bottom left cell
 				if(i + 1 < b && j - 1 >= 0){
-					minimum = checkMinimum(k, currentCell[k], cellTable[i + 1][j - 1], minimum);
+					minimum = checkMinimum(k, currentCell, cellTable[i + 1][j - 1], minimum);
 				}
 			}
 		}
