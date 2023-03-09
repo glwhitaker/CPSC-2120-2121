@@ -19,6 +19,24 @@ struct point
     double y;
 };
 
+// returns the minimum distance between the point p and the points in the cell without comparing the point to itself or to points already compared
+double checkMinimum(const int k, const point p, const vector<point> cell, double minimum){
+	for(int i = 0; i < cell.size(); i++){
+		// if in the cuurent cell, do not compare point to itself, do not compare two points more than once
+		if((p.x == cell[i].x && p.y == cell[i].y) || i >= k && k != 0){
+			break;
+		}
+		// calculate the distance between the point and the current point in the cell
+		double distance = sqrt(pow(p.x - cell[i].x, 2) + pow(p.y - cell[i].y, 2));
+		// if the distance is less than the minimum, set the minimum to the distance
+		if(distance < minimum){
+			minimum = distance;
+		}
+	}
+	// return the minimum distance
+	return minimum;
+}
+
 /*
   Reads in a file specified by the parameter
   Format of file: #of points on first line
@@ -60,28 +78,24 @@ double closestPair(string filename){
 			vector<point> currentCell = cellTable[i][j];
 			// iterate through the points in the current cell
 			for(int k = 0; k < currentCell.size(); k++){
-				// iterate through the needed cells, do not need to compare to previous surrounding cells
-				for(int l = 0; l <= 1; l++){
-					for(int m = -1; m <= 1; m++){
-						// check if the compare cell is in the cell table and its not previous cell
-						if((i + l < b && j + m < b && j + m >= 0) && !(l == 0 && m == -1)){
-							// get the compare cell
-							vector<point> compareCell = cellTable[i + l][j + m];
-							// iterate through the points in the compare cell
-							for(int n = 0; n < compareCell.size(); n++){
-								// if in the same cell, do not compare two points more than once, do not compare point to itself
-								if(l == 0 && m == 0 && n >= k){
-									break;
-								}
-								// calculate the distance between the points
-								double distance = sqrt(pow(currentCell[k].x - compareCell[n].x, 2) + pow(currentCell[k].y - compareCell[n].y, 2));
-								// if the distance is less than the minimum, set the minimum to the distance
-								if(distance < minimum){
-									minimum = distance;
-								}
-							}
-						}
-					}
+				// check the needed cells, do not need to compare to previous surrounding cells
+				// current cell
+				minimum = checkMinimum(k, currentCell[k], currentCell, minimum);
+				// right cell
+				if(j + 1 < b){
+					minimum = checkMinimum(k, currentCell[k], cellTable[i][j + 1], minimum);
+				}
+				// bottom cell
+				if(i + 1 < b){
+					minimum = checkMinimum(k, currentCell[k], cellTable[i + 1][j], minimum);
+				}
+				// bottom right cell
+				if(i + 1 < b && j + 1 < b){
+					minimum = checkMinimum(k, currentCell[k], cellTable[i + 1][j + 1], minimum);
+				}
+				// bottom left cell
+				if(i + 1 < b && j - 1 >= 0){
+					minimum = checkMinimum(k, currentCell[k], cellTable[i + 1][j - 1], minimum);
 				}
 			}
 		}
