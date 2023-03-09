@@ -1,4 +1,5 @@
 Makefile
 T*.cpp
+T*.out
 .vscode
 Lecture/Practice

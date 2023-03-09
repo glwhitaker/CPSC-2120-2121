@@ -51,8 +51,8 @@ double closestPair(string filename){
 	// close the file
 	inputFile.close();
 
-	// Find the distance between closest pair of points as a double value
-	double minimum = 1.0;
+	// set the minimum to the maximum possible distance
+	double minimum = sqrt(2);
 	// iterate through the cells in the cell table
 	for(int i = 0; i < b; i++){
 		for(int j = 0; j < b; j++){
@@ -60,11 +60,11 @@ double closestPair(string filename){
 			vector<point> currentCell = cellTable[i][j];
 			// iterate through the points in the current cell
 			for(int k = 0; k < currentCell.size(); k++){
-				// iterate through current cell, cell to the right, cell below, and cell to the right and below
+				// iterate through the needed cells, do not need to compare to previous surrounding cells
 				for(int l = 0; l <= 1; l++){
-					for(int m = 0; m <= 1; m++){
-						// check if the compare cell is in the cell table
-						if(i + l < b && j + m < b){
+					for(int m = -1; m <= 1; m++){
+						// check if the compare cell is in the cell table and its not previous cell
+						if((i + l < b && j + m < b && j + m >= 0) && !(l == 0 && m == -1)){
 							// get the compare cell
 							vector<point> compareCell = cellTable[i + l][j + m];
 							// iterate through the points in the compare cell
@@ -86,7 +86,6 @@ double closestPair(string filename){
 			}
 		}
 	}
-	
 	// return the minimum distance between two points
 	return minimum;
 }
