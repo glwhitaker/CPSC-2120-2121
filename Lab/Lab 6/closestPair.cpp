@@ -44,8 +44,8 @@ double closestPair(string filename){
 	// Read in the points and put them in the cell table
 	for(int i = 0; i < numPoints; i++){
 		point p;
-		inputFile >> p.x >> p.y;
-		cellTable[(int)(p.x * b)][(int)(p.y * b)].push_back(p);
+		inputFile >> p.y >> p.x;
+		cellTable[(int)(p.y * b)][(int)(p.x * b)].push_back(p);
 	}
 
 	// close the file
