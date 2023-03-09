@@ -22,7 +22,7 @@ struct point
 // returns the minimum distance between the point p and the points in the cell without comparing the point to itself or to points already compared
 double checkMinimum(const int k, const point p, const vector<point> cell, double minimum){
 	for(int i = 0; i < cell.size(); i++){
-		// if in the cuurent cell, do not compare point to itself, do not compare two points more than once
+		// if in the current cell, do not compare point to itself, do not compare two points more than once
 		if((p.x == cell[i].x && p.y == cell[i].y) || i >= k && k != 0){
 			break;
 		}
