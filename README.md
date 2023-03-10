@@ -1,2 +1,2 @@
 # CPSC-2120
-Coursework and practice for CPSC 2120/2121 at Clemson University
+Coursework and practice for Data Structures and Algorithms at Clemson University
