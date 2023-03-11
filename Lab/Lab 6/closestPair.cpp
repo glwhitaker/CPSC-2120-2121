@@ -49,8 +49,12 @@ double checkMinimum(const int k, const vector<point> currentCell, const vector<p
   as a double type value
 */
 double closestPair(string filename){
-	// Open the file and read in the number of points
+	// Open the file and read in the number of points\
+	// return 0 if the file cannot be opened
 	ifstream inputFile(filename);
+	if(!inputFile){
+		return 0;
+	}
 	int numPoints;
 	inputFile >> numPoints;
 
@@ -104,14 +108,14 @@ double closestPair(string filename){
 	return minimum;
 }
 
-// int main()
-// {
-//     double min;
-//     string filename;
-//     cout << "File with list of points within unit square: ";
-//     cin >> filename;
-//     min = closestPair(filename);
-//     cout << setprecision(16);
-//     cout << "Distance between closest pair of points: " << min << endl;
-//     return 0;
-// }
+int main()
+{
+    double min;
+    string filename;
+    cout << "File with list of points within unit square: ";
+    cin >> filename;
+    min = closestPair(filename);
+    cout << setprecision(16);
+    cout << "Distance between closest pair of points: " << min << endl;
+    return 0;
+}
