@@ -131,13 +131,13 @@ Node *remove(Node *T, int k)
       T = T->right;
     }
     else{
-      return nullptr;
+      T = nullptr;
     }
     // delete node
     delete temp;
   }
   // fix size of T
-  fix_size(T);
+  if(T) fix_size(T);
   // return T
   return T;
 }
@@ -172,13 +172,34 @@ void split(Node *T, int k, Node **L, Node **R)
 // insert key k into the tree T, returning a pointer to the resulting tree
 Node *insert_random(Node *T, int k)
 {
-  // If k is the Nth node inserted into T, then:
+  // with probability 1/N, insert k at the root of T, otherwise, insert_random k recursively left or right of the root of T
+  // if T is empty, create a new node with key k
+  if(!T){
+    T = new Node(k);
+  }
   // with probability 1/N, insert k at the root of T
-  // otherwise, insert_random k recursively left or right of the root of T
-  
-  //Implement Node *insert_random(Node *T, int k)
-  return nullptr;
+  else if(rand() % (T->size + 1) == 0){
+    // split T on k
+    Node *L, *R;
+    split(T, k, &L, &R);
+    // create new node with key k
+    T = new Node(k);
+    // set T's left and right subtrees to L and R
+    T->left = L;
+    T->right = R;
+  }
+  // insert_random k recursively left or right of the root of T
+  else if(k < T->key){
+    T->left = insert_random(T->left, k);
+  }
+  else{
+    T->right = insert_random(T->right, k);
+  }
+  // fix size of T
+  fix_size(T);
 
+  // return T
+  return T;
 }
 
 void printVector(vector<int> v)
@@ -189,75 +210,75 @@ void printVector(vector<int> v)
     }
 }
 
-int main(void)
-{
-  vector<int> inorder;
-  vector<int> A(10,0);
+// int main(void)
+// {
+//   vector<int> inorder;
+//   vector<int> A(10,0);
   
-  // put 0..9 into A[0..9] in random order
-  for (int i=0; i<10; i++) A[i] = i;
-  for (int i=9; i>0; i--) swap(A[i], A[rand()%i]);
-  cout << "Contents of A (to be inserted into BST):\n";
-  printVector(A);
+//   // put 0..9 into A[0..9] in random order
+//   for (int i=0; i<10; i++) A[i] = i;
+//   for (int i=9; i>0; i--) swap(A[i], A[rand()%i]);
+//   cout << "Contents of A (to be inserted into BST):\n";
+//   printVector(A);
   
-  // insert contents of A into a BST
-  Node *T = nullptr;
-  for (int i=0; i<10; i++) T = insert(T, A[i]);
+//   // insert contents of A into a BST
+//   Node *T = nullptr;
+//   for (int i=0; i<10; i++) T = insert(T, A[i]);
   
-  // print contents of BST (should be 0..9 in sorted order)
-  cout << "Contents of BST (should be 0..9 in sorted order):\n";
-  inorder=inorder_traversal(T);
-  printVector(inorder);
+//   // print contents of BST (should be 0..9 in sorted order)
+//   cout << "Contents of BST (should be 0..9 in sorted order):\n";
+//   inorder=inorder_traversal(T);
+//   printVector(inorder);
 
-  // test select
-  for (int i=0; i<10; i++) {
-    Node *result = select(T, i);
-    if (!result || result->key != i) cout << "Select test failed for select(" << i << ")!\n";
-    else cout << "Select test passed for select(" << i << ")\n";
-  }
+//   // test select
+//   for (int i=0; i<10; i++) {
+//     Node *result = select(T, i);
+//     if (!result || result->key != i) cout << "Select test failed for select(" << i << ")!\n";
+//     else cout << "Select test passed for select(" << i << ")\n";
+//   }
 
-  // test find: Elements 0..9 should be found; 10 should not be found
-  cout << "Elements 0..9 should be found; 10 should not be found:\n";
-  for (int i=0; i<11; i++) 
-    if (find(T,i)) cout << i << " found\n";
-    else cout << i << " not found\n";
+//   // test find: Elements 0..9 should be found; 10 should not be found
+//   cout << "Elements 0..9 should be found; 10 should not be found:\n";
+//   for (int i=0; i<11; i++) 
+//     if (find(T,i)) cout << i << " found\n";
+//     else cout << i << " not found\n";
 
-  // test split
-  Node *L, *R;
-  split(T, 4, &L, &R);
-  cout << "Contents of left tree after split (should be 0..4):\n";
-  inorder=inorder_traversal(L);
-  printVector(inorder);
-  cout << "Left tree size " << L->size << "\n";
-  cout << "Contents of right tree after split (should be 5..9):\n";
-  inorder=inorder_traversal(R);
-  printVector(inorder);
-  cout << "Right tree size " << R->size << "\n";
+//   // test split
+//   Node *L, *R;
+//   split(T, 4, &L, &R);
+//   cout << "Contents of left tree after split (should be 0..4):\n";
+//   inorder=inorder_traversal(L);
+//   printVector(inorder);
+//   cout << "Left tree size " << L->size << "\n";
+//   cout << "Contents of right tree after split (should be 5..9):\n";
+//   inorder=inorder_traversal(R);
+//   printVector(inorder);
+//   cout << "Right tree size " << R->size << "\n";
     
-  // test join
-  T = join(L, R);
-  cout << "Contents of re-joined tree (should be 0..9)\n";
-  inorder=inorder_traversal(T);
-  printVector(inorder);
-  cout << "Tree size " << T->size << "\n";
+//   // test join
+//   T = join(L, R);
+//   cout << "Contents of re-joined tree (should be 0..9)\n";
+//   inorder=inorder_traversal(T);
+//   printVector(inorder);
+//   cout << "Tree size " << T->size << "\n";
   
-  // test remove
-  for (int i=0; i<10; i++) A[i] = i;
-  for (int i=9; i>0; i--) swap(A[i], A[rand()%i]);
-  for (int i=0; i<10; i++) {
-    T = remove(T, A[i]);
-    cout << "Contents of tree after removing " << A[i] << ":\n";
-    inorder=inorder_traversal(T);
-    printVector(inorder);
-    if (T != nullptr)
-      cout << "Tree size " << T->size << "\n";
-  }
+//   // test remove
+//   for (int i=0; i<10; i++) A[i] = i;
+//   for (int i=9; i>0; i--) swap(A[i], A[rand()%i]);
+//   for (int i=0; i<10; i++) {
+//     T = remove(T, A[i]);
+//     cout << "Contents of tree after removing " << A[i] << ":\n";
+//     inorder=inorder_traversal(T);
+//     printVector(inorder);
+//     if (T != nullptr)
+//       cout << "Tree size " << T->size << "\n";
+//   }
 
-  // test insert_random
-  // cout << "Inserting 1 million elements in order; this should be very fast...\n";
-  // for (int i=0; i<1000000; i++) T = insert_random(T, i);
-  // cout << "Tree size " << T->size << "\n";
-  // cout << "Done\n";
+//   // test insert_random
+//   cout << "Inserting 1 million elements in order; this should be very fast...\n";
+//   for (int i=0; i<1000000; i++) T = insert_random(T, i);
+//   cout << "Tree size " << T->size << "\n";
+//   cout << "Done\n";
   
-  return 0;
-}
+//   return 0;
+// }
